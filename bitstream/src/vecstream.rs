@@ -22,6 +22,17 @@ impl VecStream {
             read_pos: 0
         }
     }
+
+    pub fn from_vec(v: Vec<u8>) -> VecStream {
+        VecStream {
+            buffer: v,
+            read_pos: 0
+        }
+    }
+
+    pub fn into_vec(self) -> Vec<u8> {
+        self.buffer
+    }
 }
 
 impl Read for VecStream {
@@ -135,7 +146,7 @@ mod tests {
 
         assert_eq!(s, "hello world");
 
-        vs.seek(SeekFrom::Start(0));
+        vs.seek(SeekFrom::Start(0)).unwrap();
         s.clear();
         vs.read_to_string(&mut s).unwrap();
 
