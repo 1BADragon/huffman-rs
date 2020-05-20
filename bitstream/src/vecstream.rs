@@ -7,6 +7,8 @@ use std::cmp::{min, max};
 /// io. All io operations are performed in memory reads can be seeked and writes will
 /// enlarge the in memory buffer.
 ///
+/// For the record I learned about std::IO::Cursor after I wrote this.
+///
 #[derive(Clone)]
 pub struct VecStream {
     buffer: Vec<u8>,

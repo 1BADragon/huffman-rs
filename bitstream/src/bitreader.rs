@@ -42,6 +42,16 @@ impl<'a> BitReader<'a> {
         Some(val != 0)
     }
 
+    pub fn get_byte(&mut self) -> Option<u8> {
+        let mut ret: u8 = 0;
+
+        for i in (0..8).rev() {
+            ret |= (self.get_bit()? as u8) << i;
+        }
+
+        Some(ret)
+    }
+
     pub fn set_read_amount(&mut self, val: usize) {
         self.read_amount = val;
     }

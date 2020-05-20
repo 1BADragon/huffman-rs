@@ -59,6 +59,16 @@ impl<'a> BitWriter<'a> {
         Ok(())
     }
 
+    /// Add a byte to the BitWriter as 8 bits ( as apposed to a single bit )
+    pub fn add_byte(&mut self, val: u8) -> Result<()> {
+        for i in (0..8).rev() {
+            let mask = 1 << i;
+            self.add_bit((val & mask) != 0)?;
+        }
+
+        Ok(())
+    }
+
     /// Sets the write threshold on the BitWriter to be val bytes. When the write threshold
     /// has been reached on the internal buffer the BitWriter will call write on the 
     /// underlying Writer.
