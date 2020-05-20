@@ -6,6 +6,7 @@ use crate::freq_tree::*;
 
 use bitstream::{VecStream, BitWriter};
 
+
 pub struct HuffmanEncoder {
     byte_counts: HashMap<u8, u64>,
     chunks: LinkedList<Vec<u8>>,

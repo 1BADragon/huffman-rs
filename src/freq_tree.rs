@@ -2,20 +2,27 @@ use std::cmp::Ordering;
 
 use bitstream::*;
 
+/// A node of the frequency tree required for huffman encoding. The data of 
+/// this node is either a composit of nodes or a value which is a byte with
+/// a frequency. 
 pub struct FreqTreeNode {
     pub data: FreqNodeData,
 }
 
+/// The payload of an ftree node. 
 pub enum FreqNodeData {
     Composit (FreqTreeComposit),
     Value (FreqTreeVal),
 }
 
+/// A leaf node of the ftree. Stores its byte value and the number of occurences
+/// of the byte
 pub struct FreqTreeVal {
     pub byte_val: u8,
     pub occures: u64
 }
 
+/// A subtree node of the ftree. It stores the sum of all leafs below the tree.
 pub struct FreqTreeComposit {
     pub occures: u64,
     pub left: Box<FreqTreeNode>,
@@ -23,6 +30,9 @@ pub struct FreqTreeComposit {
 }
 
 impl FreqTreeNode {
+    /// Returns the weight of an ftree node. If the node is a leaf it returns
+    /// the number of occurences for the byte val. If the node is a composit
+    /// then it returns the value of all leaves below it.
     pub fn get_weight(&self) -> u64 {
         use FreqNodeData::*;
         match &self.data {
@@ -31,6 +41,7 @@ impl FreqTreeNode {
         }
     }
 
+    /// Decodes an ftree produced from the encode function
     pub fn decode(data: &[u8]) -> FreqTreeNode {
         let mut vs = VecStream::from_vec(data.to_owned());
         let mut br = BitReader::with_reader(&mut vs);
@@ -52,6 +63,7 @@ impl FreqTreeNode {
         }
     }
 
+    /// Encodes an ftree 
     pub fn encode(&self) -> Vec<u8> {
         let mut vs = VecStream::new();
         let mut bw = BitWriter::with_writer(&mut vs);
