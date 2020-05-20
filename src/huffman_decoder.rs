@@ -4,11 +4,13 @@ use crate::freq_tree::*;
 
 use bitstream::{VecStream, BitReader};
 
+/// Huffman Decoder struct, currently only used as placeholder struct
 pub struct HuffmanDecoder {
 
 }
 
 impl HuffmanDecoder {
+    /// Directly decodes a buffer encoded with the HuffmanEncoder. 
     pub fn decode(buf: Vec<u8>) -> Vec<u8> {
         let (ftree, mut original_size, encoded) = Self::parse_header(buf);
         let mut vs = VecStream::from_vec(encoded);

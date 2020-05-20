@@ -6,13 +6,15 @@ use crate::freq_tree::*;
 
 use bitstream::{VecStream, BitWriter};
 
-
+/// Encoder struct. Allows a user to add chunks a peice at a time and
+/// encode all at once.
 pub struct HuffmanEncoder {
     byte_counts: HashMap<u8, u64>,
     chunks: LinkedList<Vec<u8>>,
 }
 
 impl HuffmanEncoder {
+    /// Create a new encoder struct with no data.
     pub fn new() -> HuffmanEncoder {
         HuffmanEncoder {
             byte_counts: HashMap::new(),
@@ -20,6 +22,7 @@ impl HuffmanEncoder {
         }
     }
 
+    /// Add a chunk of data to the encoder
     pub fn add_chunk(&mut self, chunk: &[u8]) {
 
         for c in chunk {
@@ -33,6 +36,7 @@ impl HuffmanEncoder {
         self.chunks.push_back(chunk.to_vec());
     }
 
+    /// Encode all chunks of data using the same huffman tree
     pub fn encode(self) -> Vec<u8> {
         let ftree = self.build_freq_tree();
         let encoding_map = self.build_encoding_map(&ftree);
